@@ -25,6 +25,8 @@ public class App {
         log.info("Tag upload2");
         log.info("Tag upload3");
         log.info("Tag upload4");
+        log.info("Tag upload5");
+    
     }
 
     public String getStatus() {

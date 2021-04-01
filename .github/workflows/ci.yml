@@ -51,15 +51,13 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
       with:
-        tag_name: ${{ env.BRANCH_OR_TAG }}
-        release_name: Release ${{ env.BRANCH_OR_TAG }}
+        tag_name: ${{ github.ref }}
+        #release_name: Release ${{ env.BRANCH_OR_TAG }}
+        release_name: Release ${{ github.ref }}
         body: |
           ${{ steps.Changelog.outputs.changelog }}
-          ## Deployment Checklist
-          - [ ] Ensure documentation is accurate
-          - [ ] Ensure pyproject.toml links are accurate
-          - [ ] Ensure readthedocs integration is working
-          - [ ] Ensure version is correct
+        draft: false
+        prerelease: false
         #tag_name: ${{ steps.tag_version.outputs.new_tag }}
         #release_name: Release ${{ steps.tag_version.outputs.new_tag }}
         #body: ${{ steps.tag_version.outputs.changelog }}
