@@ -19,7 +19,6 @@ jobs:
     - name: Setup Environment
       run: |
         BRANCH_OR_TAG="$(echo "${GITHUB_REF}" | sed 's/refs\/heads\///g' | sed 's/refs\/tags\///g')"
-
 #    - name: Bump version and push tag
 #      id: tag_version
 #      uses: mathieudutour/github-tag-action@v5.3
