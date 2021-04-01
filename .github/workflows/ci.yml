@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Setup Environment
+      run: |
+        BRANCH_OR_TAG="$(echo "${GITHUB_REF}" | sed 's/refs\/heads\///g' | sed 's/refs\/tags\///g')"
 
 #    - name: Bump version and push tag
 #      id: tag_version
@@ -25,17 +28,32 @@ jobs:
 #        release_branches: master
 #        tag_prefix: v
 #
+
+
+    - name: Production -- Generate Changelog
+      if: contains(github.ref, '/tags/v')
+      uses: scottbrenner/generate-changelog-action@1.0.3
+      id: Changelog
+      env:
+        REPO: ${{ github.repository }}
+
+
     - name: Create a GitHub releases
+      if: contains(github.ref, '/tags/v')
       uses: actions/create-release@v1
+      id: create_release
       env:
         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{ env.BRANCH_OR_TAG }}
+        release_name: Release ${{ env.BRANCH_OR_TAG }}
         body: |
-          Changes in this Release
-          - First Change
-          - Second Change
+          ${{ steps.Changelog.outputs.changelog }}
+          ## Deployment Checklist
+          - [ ] Ensure documentation is accurate
+          - [ ] Ensure pyproject.toml links are accurate
+          - [ ] Ensure readthedocs integration is working
+          - [ ] Ensure version is correct
         #tag_name: ${{ steps.tag_version.outputs.new_tag }}
         #release_name: Release ${{ steps.tag_version.outputs.new_tag }}
         #body: ${{ steps.tag_version.outputs.changelog }}
