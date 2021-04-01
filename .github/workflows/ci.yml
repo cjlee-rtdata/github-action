@@ -11,28 +11,40 @@ on:
 
 jobs:
   build-java:
-
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v2
-
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
+    - name: Bump version and push tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v5.3
       with:
-        java-version: 1.8
+        github_token: ${{ secrets.GIT_TOKEN }}
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-
-    - name: Build with Gradle
-      run: ./gradlew build
-
-    - name: Build and Push Docker Image
-      uses: mr-smithers-excellent/docker-build-push@v5
+    - name: Create a GitHub release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
       with:
-        image: rtdata/git-action-demo-app
-        registry: docker.io
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-         
+        tag_name: ${{ steps.tag_version.outputs.new_tag }}
+        release_name: Release ${{ steps.tag_version.outputs.new_tag }}
+        body: ${{ steps.tag_version.outputs.changelog }}
+
+#    - name: Set up JDK 1.8
+#      uses: actions/setup-java@v1
+#      with:
+#        java-version: 1.8
+
+    # - name: Grant execute permission for gradlew
+    #   run: chmod +x gradlew
+
+    # - name: Build with Gradle
+    #   run: ./gradlew build
+
+#    - name: Build and Push Docker Image
+#      uses: mr-smithers-excellent/docker-build-push@v5
+#      with:
+#        image: rtdata/git-action-demo-app
+#        registry: docker.io
+#        username: ${{ secrets.DOCKER_USERNAME }}
+#        password: ${{ secrets.DOCKER_PASSWORD }}
+    
