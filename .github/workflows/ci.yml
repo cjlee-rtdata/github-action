@@ -31,6 +31,11 @@ jobs:
 #        tag_prefix: v
 #
 
+    - name: Releases -- Prepare Release Content
+        if: contains(github.ref, '/tags/v')
+        run: |
+          echo "{}" > package.json
+
     - name: Production -- Generate Changelog
       if: contains(github.ref, '/tags/v')
       uses: scottbrenner/generate-changelog-action@master
