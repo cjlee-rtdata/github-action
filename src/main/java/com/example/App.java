@@ -19,6 +19,7 @@ public class App {
     {
         Logger log = LoggerFactory.getLogger(App.class);
         log.info("Java app startedsss");
+        log.info("Tag 4.0");
     }
 
     public String getStatus() {
