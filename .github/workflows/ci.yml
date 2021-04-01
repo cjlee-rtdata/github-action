@@ -47,9 +47,9 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
       with:
         #tag_name: ${{ env.BRANCH_OR_TAG }}
-        tag_name: ${BRANCH_OR_TAG}
+        tag_name: "${BRANCH_OR_TAG}"
         #release_name: Release ${{ env.BRANCH_OR_TAG }}
-        release_name: Release ${BRANCH_OR_TAG}
+        release_name: Release "${BRANCH_OR_TAG}"
         body: |
           ${{ steps.Changelog.outputs.changelog }}
           ## Deployment Checklist
