@@ -4,9 +4,10 @@
 name: Java CI with Gradle
 
 on:
-  push:
+  push: 
+    # Sequence of patterns matched against refs/tags
     tags:
-      - 'v*'
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
     #branches: [ master ]
   #pull_request:
     #branches: [ master ]
@@ -30,10 +31,9 @@ jobs:
 #        tag_prefix: v
 #
 
-
     - name: Production -- Generate Changelog
       if: contains(github.ref, '/tags/v')
-      uses: scottbrenner/generate-changelog-action@1.0.3
+      uses: scottbrenner/generate-changelog-action@master
       id: Changelog
       env:
         REPO: ${{ github.repository }}
