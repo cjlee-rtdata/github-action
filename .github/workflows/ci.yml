@@ -32,9 +32,9 @@ jobs:
 #
 
     - name: Releases -- Prepare Release Content
-        if: contains(github.ref, '/tags/v')
-        run: |
-          echo "{}" > package.json
+      if: contains(github.ref, '/tags/v')
+      run: |
+        echo "{}" > package.json
 
     - name: Production -- Generate Changelog
       if: contains(github.ref, '/tags/v')
